@@ -1,0 +1,44 @@
+
+
+body {
+    background: #f8fafc;
+    min-height: 100vh;
+}
+.signup-container {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.card {
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px rgba(44,62,80,.09);
+    border: none;
+}
+.form-label {
+    font-weight: 500;
+}
+.form-control:focus {
+    box-shadow: 0 0 0 0.15rem rgba(44,130,201,0.2);
+    border-color: #2980b9;
+}
+.btn-primary {
+    border-radius: 2rem;
+    font-weight: 600;
+    background: linear-gradient(90deg,#4662d1 60%,#3586c6 100%);
+    border: none;
+}
+.btn-primary:focus, .btn-primary:hover {
+    background: linear-gradient(90deg,#384a99 60%,#29627f 100%);
+}
+.signup-logo {
+    max-width: 320px;
+    margin: 0 auto 2rem;
+}
+.side-logo {
+    max-width: 100%;
+    border-radius: 2rem;
+}
+@media (max-width: 767px) {
+    .signup-logo { max-width: 200px;}
+}

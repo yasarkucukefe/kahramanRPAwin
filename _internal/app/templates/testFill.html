@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Fill Page</h1>
+    <form id="testForm">
+        <div>
+            <label for="inputField">Firma</label>
+            <input type="text" id="inputField" name="inputField">
+        </div>
+        <div>
+            <label for="inputField">VKN</label>
+            <input type="text" id="inputField" name="inputField">
+        </div>
+        <div>
+            <label for="inputField">Kayıt tarihi</label>
+            <input type="text" id="inputField" name="inputField">
+        </div>
+        <div>
+            <label for="inputField">Fatura Tarihi</label>
+            <input type="text" id="inputField" name="inputField">
+        </div>
+        <div>
+            <label for="inputField">Fatura No</label>
+            <input type="text" id="inputField" name="inputField">
+        </div>
+        <div>
+            <label for="inputField">Tutar</label>
+            <input type="text" id="inputField" name="inputField">
+        </div>
+        <div>
+            <label for="inputField">KDV</label>
+            <input type="text" id="inputField" name="inputField">
+        </div>
+
+        <button>Click me</button>
+    </form>
+
+    <script>
+        document.getElementById('testForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const inputValue = document.getElementById('inputField').value;
+            console.log('Form submitted with value:', inputValue);
+            // Here you can add code to send the inputValue to your backend if needed
+        });
+    </script>
+    
+</body>
+</html>

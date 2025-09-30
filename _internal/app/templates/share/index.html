@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KahramanAI</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}?v=1.0"/>
+
+    <!-- Static JS files -->
+    <script src="{{ url_for('static', filename='js/util.js') }}?v=1.01"></script>
+
+</head>
+<body>
+
+
+    <div>
+        <img src="{{ url_for('static', filename='images/ajax_tree.gif') }}?v=1.0" alt="" width="100" height="100"  style="display: block; margin: 0 auto; padding-top: 20px;">
+    </div>
+
+    <div style="text-align: center; padding-top: 20px; opacity: 0.5;">
+        KahramanAI paylaşım linki ile giriş yapılıyor... 
+    </div>
+
+    <div id="div-token" data-token="{{token}}"></div>
+
+    <script>
+
+        const token = document.getElementById("div-token").dataset.token;
+
+        const checkShareToken = (resp) => {
+            if(resp.error) {
+                alert("Hata: " + "Geçerli olmayan bir paylaşım linki");
+                //window.location.href = "/";
+                return;
+            }
+            //console.log("Share token is valid:", resp);
+            if(+resp.bid > 0){ // Bundle is shared
+                window.location.href = `/shr/b/${resp.bid}/c/${token}?shr=bundle`;
+            }else{ // customer is shared
+                window.location.href = `/shr/c/${token}?shr=customer`;
+            }
+        }
+        
+        commonFetchShare("/shr_check_token", checkShareToken, {}, null);                     
+
+
+    </script>
+
+</body>
+</html>

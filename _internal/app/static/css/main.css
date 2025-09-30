@@ -1,0 +1,151 @@
+.div-img-center { /* Class to center images inside a div. */
+  display: flex;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;      /* Center vertically */
+}
+
+.receipt-item {
+  padding:5px; border-bottom: 1px solid lightgray;
+}
+
+.fade-image {
+  opacity: 1; /* Start visible */
+  transition: opacity 0.1s ease-in-out; /* Adjust duration and easing */
+}
+
+.item-details {
+  display: flex;
+  column-gap: 10px;
+}
+
+.receipt-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.item-qty {font-weight: bold}
+
+.item-name {max-width: 300px}
+
+/* EDITABLE CELLS */
+.editable {
+    position: relative;
+    cursor: pointer;
+}
+.editable .pencil {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 3px;
+    font-size: 18px;
+    color: #888;
+}
+.editable:hover .pencil {
+    display: inline;
+}
+
+
+/* UPLOAD STYLES */
+.upload-container {
+    width: 90%;
+    margin: 40px auto;
+    text-align: center;
+}
+.file-input-label {
+    margin: 20px 0;
+    display: inline-block;
+    cursor: pointer;
+    background: #4f8cff;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+.file-input-label:hover {
+    background: #276bda;
+}
+.file-input {
+    display: none;
+}
+.drop-area {
+    border: 2px dashed #4f8cff;
+    border-radius: 10px;
+    padding: 50px 30px;
+    background: #f4f7ff;
+    margin-top: 20px;
+    color: #555;
+    transition: background 0.2s, border 0.2s;
+}
+.drop-area.dragover {
+    background: #e6efff;
+    border-color: #276bda;
+}
+.file-list {
+    margin-top: 20px;
+    text-align: left;
+}
+
+a:hover .bi-plus-circle-fill {
+    transform: scale(1.2);
+  }
+
+
+.bi-arrow-clockwise:active {
+    transform: scale(0.9);
+    background-color: #d0e7ff;
+}
+
+
+.bi-arrow-left-square:active {
+    transform: scale(0.9);
+    background-color: #d0e7ff;
+}
+
+
+.toplam-cell, .matrah-cell, .kdv-cell {
+    text-align: right;
+}
+
+.receipt-filter-btn.active {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+    border-width: 2px;
+    transform: scale(1.01);
+}
+
+/* Custom CSS for sticky header */
+.table-sticky-header thead th {
+    position: sticky;
+    top: 0; /* Sticks to the top of its scrolling container */
+    background-color: var(--bs-light); /* Or any color you prefer, e.g., #f8f9fa */
+    z-index: 10; /* Ensures the header stays above the table content */
+    border-bottom: 2px solid var(--bs-border-color); /* Optional: visual separation */
+}
+
+/* Adjust the height of the container will be done by JS */
+.table-scroll-container {
+    overflow-y: auto;
+    min-height: 100px;
+}
+
+th {
+  vertical-align: middle !important;
+}
+
+.share-select-button {
+    min-width: 220px;
+    text-align: left; /* Align text to the left like a real select */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.share-select-button .button-content {
+    flex-grow: 1;
+}
+
+/* Hover effect for upload items */
+.upload-item:hover {
+    background-color: #f8f9fa; /* light gray like .bg-light */
+    cursor: pointer;          /* optional */
+}

@@ -1,0 +1,130 @@
+
+body { 
+    background: #f8f9fa; 
+}
+
+/* Ensure the body and html take up full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Application Container - The viewport for our slides */
+#app-container {
+    position: relative; /* Crucial for positioning child views */
+    width: 100%;
+    height: 100vh; /* Takes full viewport height */
+    overflow: hidden; /* Hides views that are off-screen */
+    /* On larger screens, you might want to constrain max-width: */
+    max-width: 500px; /* Typical phone width */
+    margin: 0 auto; /* Center on larger screens */
+    border-left: 1px solid #ddd; /* Visual border for phone frame */
+    border-right: 1px solid #ddd; /* Visual border for phone frame */
+    box-shadow: 0 0 15px rgba(0,0,0,0.1); /* Soft shadow for depth */
+}
+
+/* Individual Application Views */
+.app-view {
+    position: absolute; /* Allows precise positioning */
+    top: 0;
+    left: 100%; /* Initially all views are off-screen to the right */
+    width: 100%;
+    height: 100%;
+    background-color: #fff; /* Ensure views have a background */
+    box-sizing: border-box; /* Include padding/border in element's total width/height */
+    transition: left 0.5s ease-in-out; /* Smooth slide animation */
+    -webkit-transition: left 0.5s ease-in-out; /* For WebKit browsers */
+
+    /* Ensure content inside views can scroll if needed */
+    display: flex; /* Use flexbox for header/content/footer layout */
+    flex-direction: column;
+}
+
+/* The active view */
+.app-view.active {
+    left: 0; /* Brings the active view into the screen */
+}
+
+/* For views sliding out to the right */
+.app-view.exit-right {
+    left: 100%;
+}
+
+/* For views sliding out to the left */
+.app-view.exit-left {
+    left: -100%;
+}
+
+/* Utility for spacing (Bootstrap already handles a lot, but for custom adjustments) */
+.p-0 { padding: 0 !important; }
+.m-0 { margin: 0 !important; }
+
+/* Adjust Bootstrap specific overrides if needed */
+.h4 {
+    font-size: 1.25rem;
+}
+
+/* Header and section styling for visual appeal */
+header {
+    flex-shrink: 0; /* Prevent header from shrinking */
+    z-index: 10; /* Ensure header is above content during transition */
+}
+
+section {
+    flex-grow: 1; /* Allow content to take up remaining space */
+    overflow-y: auto; /* Enable vertical scrolling for content */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding-bottom: 70px; /* Leave space for potential fixed footer/nav */
+}
+
+/* Hide back/next buttons when not applicable (handled by JS, but visually confirm) */
+.d-none {
+    display: none !important;
+}
+
+/* File Upload Styles */
+
+.upload-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;  /* <-- aligns to the top */
+    justify-content: center;
+    margin-top: 40px;         /* <-- adjust this value as needed */
+    padding-top: 30px;  
+}
+.upload-box {
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+}
+.custom-file-input {
+    display: none;
+}
+.file-label {
+    width: 100%;
+    padding: 1.2rem;
+    background: #007bff;
+    color: white;
+    border-radius: 0.75rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: block;
+}
+.file-label:hover, .file-label:active {
+    background: #0056b3;
+}
+.selected-file {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: #343a40;
+}
+.upload-btn {
+    margin-top: 1.5rem;
+    width: 100%;
+}

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>KahramanAI-RPA</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}?v=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- QR Code -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Load Cognito Identity SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.2.0/dist/amazon-cognito-identity.min.js"></script>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Font Awesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Static JS files -->
+    <script src="{{ url_for('static', filename='js/util.js') }}?v=1.01"></script>
+
+    <!-- Static CSS files -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v=1.0" />
+
+</head>
+<body>
+    <nav class="nav-common nav-bundles navbar navbar-expand-lg navbar-dark bg-dark border-bottom shadow-sm" data-cid="{{ customer_id }}">
+        <div class="container-fluid justify-content-between"> 
+            <a class="navbar-brand" href="#">Kahraman <span class="fw-bold">AI</span></a>
+        </div>
+        <!-- Navbar by config.js -->
+    </nav>
+
+    <div id="div-token" data-token="{{token}}"></div>
+
+    <div class="d-flex justify-content-start align-items-center p-3">
+
+        <div class="ms-2">
+            <button class="btn btn-outline-secondary mb-2" type="button" title="Tabloyu Yenile" onclick="shr_fetchBundles()" style="cursor: pointer;">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
+
+        <div class="ms-2">
+            <button class="btn btn-outline-secondary mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#div-text-filter">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+
+        <div class="ms-5">
+            <button class="btn btn-outline-secondary mb-2" type="button" title="Paylaşım Linki" id="btn-for-shared-link">
+                <i class="bi bi-link"></i>
+            </button>
+        </div>
+
+        <div id="div-summaryMetrics" class="d-flex ms-3" style="gap: 10px; align-items: center;">
+            
+        </div>
+
+        <!-- Right-aligned month input -->
+        <div class="ms-auto" style="max-width:220px;">
+            <input type="month" id="monthInput" name="month" class="form-control">
+        </div>
+      
+    </div>
+
+    <div class="collapse" id="div-text-filter">
+        <div class="d-flex justify-content-start align-items-center px-3 pb-1">
+            <div class="d-flex align-items-center gap-2"> 
+                <select name="textFilterSelect" id="text-filter-select" class="form-select" title="Arama yapılacak sütun"></select>
+
+                <input type="text" id="text-filter-input" class="form-control" placeholder="Ara..." style="width: 200px;">
+                
+                <button type="button" class="btn d-none" id="btn-clear-filter"  onclick="clearTableFilter()" title="Filtreyi kaldır">
+                    <i class="bi bi-x-circle fs-5"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <section id="tableWrapper" class="table-response table-container p-1">
+        <div class="table-scroll-container">
+            <table class="table align-middle table-bordered table-hover dataTable table-sticky-header" id="bundleTable">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Kod</th>
+                        <th scope="col">Etiket Tanımı</th>
+                        <th scope="col">Açıklama</th>
+                        <th scope="col">Ek Notlar</th>
+                        <th scope="col">Belgeler</th>
+                        <th scope="col">Matrah</th>
+                        <th scope="col">KDV</th>
+                        <th scope="col">Toplam</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="8" class="text-center">
+                            <img src="{{ url_for('static', filename='images/ajax_loader_arrows.gif') }}?v=1.0" alt="Yükleniyor...">
+                            <br>
+                            Gruplama etiketleri yükleniyor...
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot><tr class="d-none"></tr></tfoot>
+            </table>
+            
+        </div>
+
+        
+
+    </section>
+
+    <!-- Modal Content For Sharing-->
+    <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shareModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div id="shareModalBody" class="modal-body">
+                    <div style="text-align: right;">
+                        <img src="{{ url_for('static', filename='images/ajax_tree.gif') }}?v=1.0" alt="Yükleniyor..." class="mb-2 d-none" id="ajaxCreateShareLink" width="32">
+                        <button type="button" id="createShareTokenBtn" class="btn btn-success" onclick="createNewShareTokenForCustomer()">Yeni Paylaşım Linki Oluştur</button>
+                    </div>
+                    <div class="div-data-loading text-center mb-2 d-none">
+                        <img style="opacity: 0.5;" src="{{ url_for('static', filename='images/ajax_loader_arrows.gif') }}?v=1.0" alt="Yükleniyor...">
+                    </div>
+                    <div id="share-link-container" class="dropdown mt-1 d-none">
+                        <div class="text-secondary">AKTİF PAYLAŞIM LİNKLERİ</div>
+                        <!-- The visible button that shows the selection -->
+                        <button id="shareSelectBtn" class="btn btn-outline-secondary dropdown-toggle share-select-button w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-sid="0" data-jwt="">
+                            <span class="button-content">
+                                <span class="d-block fw-bold line-rmk"></span>
+                                <span class="d-block text-muted small line-rmk2"></span>
+                            </span>
+                        </button>
+                        <!-- The dropdown menu with the options -->
+                        <ul class="dropdown-menu w-100"> </ul>
+                    </div>
+
+                    <div id="share-action-content" class="share-action-content mt-2 d-none">
+                        <div class="share-action-divs border rounded-3 d-none p-3">
+                            <div class="d-none" style="text-align: right; cursor: pointer;" title="Kapat" onclick="hideShareActionDivs()"><i class="bi bi-x-lg"></i></div>
+                            <div id="share-action-form" class="d-none">
+                                <div style="text-align: right;"><i class="bi bi-pencil"></i></div>
+                                <form id="shareActionForm">
+                                    <div class="mb-3">
+                                        <label for="input-shareRmk1" class="form-label fs-6 fw-semibold">Açıklama</label>
+                                        <input type="text" class="form-control" name="share-q1" id="input-shareRmk1" placeholder="Açıklama"  title="Paylaşım hakkında açıklama" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="input-shareRmk2" class="form-label fs-6 fw-semibold">Detay</label>
+                                        <input type="text" class="form-control" name="share-q2" id="input-shareRmk2" placeholder="Detay"  title="Paylaşım hakkında detay " required>
+                                    </div>
+
+                                    <div class="d-flex mt-2">
+                                        <button type="submit" id="shareUpdateBtn" class="btn btn-secondary">Kaydet</button>
+                                        <img src="{{ url_for('static', filename='images/ajax_tree.gif') }}?v=1.0" alt="Yükleniyor..." class="ms-2 d-none" id="ajaxUpdateShareLink" width="32">
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="share-action-delete" class="d-none">
+                                <div class="d-flex mt-2 justify-content-center">
+                                    <button class="btn btn-danger" type="button" title="Sil" onclick="confirmShareActionDelete()" style="cursor: pointer;">
+                                        PAYLAŞIM LİNKİNİ SİL
+                                    </button>
+                                    <img src="{{ url_for('static', filename='images/ajax_tree.gif') }}?v=1.0" alt="Yükleniyor..." class="ms-2 d-none" id="ajaxDeleteShareLink" width="32">
+                                </div>
+                            </div>
+                            <div id="share-action-qrcode" class="d-none">
+                                <div class="qr-code-body">
+                                    <div class="d-flex justify-content-center"><canvas id="qr-canvas" data-link=""></canvas></div>
+                                    <div class="mt-3 alert alert-info align-items-center" >
+                                        Paylaşım linki için QR kodu okutunuz.
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4 share-action-btns">
+                            <button class="btn btn-outline-secondary mb-2" type="button" title="Düzenle" onclick="showShareActionForm()" style="cursor: pointer;">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary mb-2" type="button" title="Sil" onclick="showShareActionDelete()" style="cursor: pointer;">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary mb-2" type="button" title="Düzenlemeyi Kapat" onclick="hideShareActionDivs()" style="cursor: pointer;">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary mb-2" type="button" title="QR Kod" onclick="showShareActionQRCode()" style="cursor: pointer;">
+                                <i class="bi bi-qr-code"></i>
+                            </button>
+                            <button class="btn btn-primary mb-2" type="button" title="Paylaşım Linki" onclick="getShareLinkToCopy()" style="cursor: pointer;">PAYLAŞ</button>
+                        </div>
+                    </div>                    
+                </div>
+                <div id="shareModalFooter" class="modal-footer text-secondary small">                   
+                   Paylaşım linkini kullanarak, bir oturum açılmaksızın yeni belgeler yüklenebilir, belgeler görüntülenebilir ve düzenlenebilir.
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="div-src" data-receiptIconUrl="{{ url_for('static', filename='images/receipt_icon.png') }}?v=1.0" data-loadingGifUrl="{{ url_for('static', filename='images/ajax_loader_arrows.gif') }}?v=1.0"></div>
+
+    <div id="resultMessage" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1055; min-width: 300px; max-width: 90%; display: none;"></div>
+
+    <script src="{{ url_for('static', filename='js/shr/shr_bundles.js') }}?v=1.01"></script>
+    <script src="{{ url_for('static', filename='js/rpa.js') }}?v=1.01"></script>
+    <script src="{{ url_for('static', filename='js/ortak.js') }}?v=1.01"></script>
+    <script src="{{ url_for('static', filename='js/bundles.js') }}?v=1.01"></script>  
+    <script src="{{ url_for('static', filename='js/shr/shr_ortak.js') }}?v=1.01"></script>
+    <script src="{{ url_for('static', filename='js/shr/shr_config.js') }}?v=1.01"></script>
+    
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

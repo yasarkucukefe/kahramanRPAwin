@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KahramanAI</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}?v=1.0"/>
+    
+    <!-- Load Cognito Identity SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.2.0/dist/amazon-cognito-identity.min.js"></script>
+
+    <!-- Static JS file -->
+    <script src="{{ url_for('static', filename='js/user.js') }}?v=1.0"></script>
+
+   
+</head>
+<body>
+
+    <div>
+        <img src="{{ url_for('static', filename='images/ajax_tree.gif') }}?v=1.0" alt="" width="100" height="100" style="display: block; margin: 0 auto; padding-top: 20px;">
+    </div>
+
+
+    <script>
+
+        const cognitoUser = userPool.getCurrentUser();
+
+        if (cognitoUser) {
+            cognitoUser.getSession((err, session) => {
+                if (err) {
+                    //console.error("Error getting session:", err);
+                    // no session or error occurred
+                    signOut();
+                    return;
+                }
+                console.log("Session:", session);
+
+                if(!session.isValid()) {
+                    // Session has expired or is invalid
+                    cognitoUser.refreshSession(session.getRefreshToken(), (err, session) => {
+                        if (err) {
+                            console.error("Failed to refresh session:", err);
+                            signOut(); // Sign out the user if session refresh fails
+                            return;
+                        }
+                        console.log("Session refreshed successfully:", session);
+                        localStorage.setItem("accessToken", session.getAccessToken().getJwtToken());
+                        localStorage.setItem("idToken", session.getIdToken().getJwtToken());
+                        startAutoRefresh(session.getIdToken().getExpiration());
+                    });
+                }
+                // Session is valid, load the landing page
+                window.location.href = '/u';
+
+            });
+
+            
+        } else {
+            // User is not signed in
+            window.location.href = '/signin';
+        }
+
+    </script>
+    
+</body>
+</html>

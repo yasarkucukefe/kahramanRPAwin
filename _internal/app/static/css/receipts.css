@@ -1,0 +1,222 @@
+/* Inline Edit Receipt Details */
+
+.editable-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.edit-btn {
+  display: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #888;
+  font-size: .85rem;
+}
+
+.editable-cell:hover .edit-btn {
+  display: inline-block;
+}
+
+.edit-btn-vat {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #888;
+  font-size: .85rem;
+}
+
+.edit-actions {
+  display: flex;
+  align-items: center;   /* This vertically centers items */
+  gap: 5px;              /* Adds space between input and icons */
+}
+
+.edit-actions button {
+  border: none;
+  background: none;
+  font-size: 1.3em;      /* Make icon buttons similar size to input */
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+/* RECEIPT OFFCANVAS */
+.custom-half-offcanvas {
+    width: 50vw !important;
+    max-width: 50vw;
+    z-index: 1060;
+}
+
+.offcanvas-backdrop.show {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Receipt Item Styles */
+.rcpIdx {
+    width: 30px;
+    height: 30px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: 
+        background-color 0.1s,
+        box-shadow 0.1s,
+        transform 0.07s,
+        border-color 0.1s;
+}
+
+.rcpIdx:active {
+    background-color: #e0e0e0;   /* Slightly darker */
+    box-shadow: inset 1px 1px 4px #bbb;
+    transform: scale(0.96);
+    border-color: #888;
+}
+
+.aiBtn {
+    width: 30px;
+    height: 30px;
+    background-color: #65c6ec;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: 
+        background-color 0.1s,
+        box-shadow 0.1s,
+        transform 0.07s,
+        border-color 0.1s;
+}
+
+.aiBtn:active {
+    background-color: #e0e0e0;   /* Slightly darker */
+    box-shadow: inset 1px 1px 4px #bbb;
+    transform: scale(0.96);
+    border-color: #888;
+}
+
+.saveBtn {
+    height: 30px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    margin-right: 10px;
+    padding: 2px 3px;
+    cursor: pointer;
+    transition: 
+        background-color 0.1s,
+        box-shadow 0.1s,
+        transform 0.07s,
+        border-color 0.1s;
+}
+
+.saveBtn:active {
+    background-color: #e0e0e0;   /* Slightly darker */
+    box-shadow: inset 1px 1px 4px #bbb;
+    transform: scale(0.96);
+    border-color: #888;
+}
+
+.changedCell {
+  background-color: #ffe082 !important; /* Nice yellow highlight */
+  transition: background-color 0.4s;
+}
+
+
+
+.seciliReceipt {
+    background-color: #d0e0f0;
+    border-color: #007bff;
+}
+
+.rcpLabel {
+    font-weight: bold;
+    width: 100px;
+    white-space: nowrap;
+}
+
+.rcpTable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.rcpTable td.rcpLabel, .rcpTable td.rcpValue {
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+  
+.rcpActions, .editCellVAT {
+    border-top:1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    padding-left: 5px;
+}
+
+.tdVATtable{
+    border-right: 1px solid #ccc;
+    padding-left:20px;
+    padding-bottom:5px;
+}
+
+  .form-check-input.custom-visible {
+    width: 1.1em;
+    height: 1.1em;
+    border: 2px solid #6c757d; /* Bootstrap secondary color */
+    border-radius: 0.2em;
+    box-shadow: none;
+    outline: none;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+
+  .form-check-input.custom-visible:checked {
+    background-color: #0d6efd; /* Bootstrap primary */
+    border-color: #0d6efd;
+  }
+
+  .form-check-input.custom-visible:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+  }
+
+  /* RPA Table Styles */
+  .bi-play-circle:hover {
+      opacity: 0.7;
+      color: #198754;
+      cursor: pointer;
+  }
+
+  #rpaTable select {
+      padding: 2px;
+      font-size: 0.9rem;
+  }
+
+  #rpaTable td {
+      white-space: nowrap;
+  }
+
+  #rpaTable td, th {
+      border: 1px solid #ccc;
+      padding: 4px;
+  }
+
+  .rcpActions2 {
+      padding-left: 5px;
+  }
+
+  #receiptsDataTable tbody tr:hover {
+      background-color: #f0f8ff;
+      cursor: pointer;
+  }
